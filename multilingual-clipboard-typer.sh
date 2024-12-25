@@ -218,9 +218,12 @@ process_content() {
             switch_to_arabic
             ydotool type "$converted_segment"
         else
-            escaped_segment=$(echo "$segment" | sed 's/-/\\-/g')
+            # If the segment starts with a hyphen then add a space to avoid ydotool treating it as an option
+            if [[ "$segment" == -* ]]; then
+                segment=" $segment"
+            fi
             switch_to_english
-            ydotool type "$escaped_segment"
+            ydotool type "$segment"
         fi
     done
 }
